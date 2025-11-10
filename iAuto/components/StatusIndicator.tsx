@@ -1,13 +1,6 @@
-import React, { useEffect } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing
-} from 'react-native-reanimated';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/Colors';
-import { Timing } from '../constants/Timing';
 import { ParsedVehicle } from '../types';
 
 interface StatusIndicatorProps {
@@ -21,34 +14,6 @@ export function StatusIndicator({
   detectedVehicle,
   showConfirmation
 }: StatusIndicatorProps) {
-  const opacity = useSharedValue(0);
-
-  useEffect(() => {
-    if (showConfirmation && detectedVehicle) {
-      // Show confirmation
-      opacity.value = withTiming(1, {
-        duration: Timing.fadeInDuration,
-        easing: Easing.ease,
-      });
-    } else if (isAnalyzing) {
-      // Show analyzing
-      opacity.value = withTiming(1, {
-        duration: Timing.fadeInDuration,
-        easing: Easing.ease,
-      });
-    } else {
-      // Hide
-      opacity.value = withTiming(0, {
-        duration: Timing.fadeOutDuration,
-        easing: Easing.ease,
-      });
-    }
-  }, [isAnalyzing, detectedVehicle, showConfirmation]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
   // Determine what to show
   let displayText = '';
   let textStyle = styles.analyzing;
@@ -71,9 +36,9 @@ export function StatusIndicator({
   }
 
   return (
-    <Animated.View style={animatedStyle}>
+    <View>
       <Text style={textStyle}>{displayText}</Text>
-    </Animated.View>
+    </View>
   );
 }
 
